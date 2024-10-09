@@ -12,14 +12,26 @@ class IndexController extends Controller
             "f_creationDate" => "creationDate:[2024-01-01T00:00:00Z TO 2024-09-11T23:59:59Z]",
             "status" => "completed"
         ], true);
-
+        $orderform  = Vtex::getOrderFormConfiguration();
+        dd($orderform);
+        $orderform['recaptchaKeys'] = [
+                "clientId" => "32535405986-g4vum54tekqd5t1b6c70uls8lorenqh2.apps.googleusercontent.com",
+                "clientSecret" => "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",
+                "projectId" => "grupocentral",
+                "label" => "vtexappkey-centralfarma-BYFGWD",
+                "score" => null
+        ];
+        //https://console.cloud.google.com/security/recaptcha/6Ldk31wqAAAAAOjGYfYTSsMkD_nD9denNMQtwlzc/details?project=grupocentral&authuser=0
+        $updateForm = Vtex::UpdateOrderFormConfiguration($orderform);
+        dd($updateForm);
         $orders     = Vtex::getOrders($params);
-        $order      = Vtex::getOrder("1461360613477-01");
+        $orderId    = $orders["list"][0]["orderId"];
+        $order      = Vtex::getOrder( $orderId);
         $products   = Vtex::getProductAndSkuIds();
         $skuId      = $products["data"][1][0];
         $inventory  = Vtex::getInventory($skuId);
         $price      = Vtex::getSkuPrice($skuId);
-        dd( $price);
+        dd($order);
         return view('welcome', $orders);
     }
 }

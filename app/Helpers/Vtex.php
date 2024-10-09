@@ -172,4 +172,30 @@ class Vtex
 
         return $response->json();
     }
+
+    public static function getOrderFormConfiguration()
+    {
+        $response = Http::withHeaders([
+            'X-VTEX-API-AppKey' => env('VTEX_APP_KEY'),
+            'X-VTEX-API-AppToken' => env('VTEX_APP_TOKEN'),
+        ])->get("https://" . env('VTEX_STORE') . ".vtexcommercestable.com.br/api/checkout/pvt/configuration/orderForm");
+
+        return $response->json();
+    }
+
+    public static function UpdateOrderFormConfiguration($data = [])
+    {
+
+        // Make the POST request to the VTEX API with headers and data
+        $response = Http::withHeaders([
+            'X-VTEX-API-AppKey' => env('VTEX_APP_KEY'),
+            'X-VTEX-API-AppToken' => env('VTEX_APP_TOKEN'),
+        ])->post("https://" . env('VTEX_STORE') . ".vtexcommercestable.com.br/api/checkout/pvt/configuration/orderForm", $data);
+
+        return [
+            'status' =>$response->status(),
+            'data' => $response->json(),
+        ];
+    }
+
 }
